@@ -1,5 +1,5 @@
 var gameSocket // socket do jogo
-var room;
+var temas = ["Ciencias","Desporto","Entretenimento","Historia","Arte","Geografia"]; // arreio de temas disponiveis para random
 exports.iniciar = function(socket){
    gameSocket = socket;
 
