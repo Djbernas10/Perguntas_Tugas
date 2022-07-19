@@ -28,15 +28,19 @@
 
         
         /*VARIAVEIS*/
-
-        var socket = io.connect("http://192.168.1.76:5000"); // para rede local
-        //var socket = io.connect("http://localhost:5000"); // para local host
+        //192.168.1.76
+        //nord 100.67.125.212
+        //var socket = io.connect("http://192.168.1.76:5000"); // para rede local
+        var socket = io.connect("http://localhost:5000"); // para local host
         var divChat = document.querySelector('#Msg-Box');
         var form = document.getElementById('form');
         var msgInput = document.getElementById("chat-input");
         const params = new URLSearchParams(window.location.search);
         var sala = params.get("id");// guarda o id da sala de jogo
         var host = '<%= Host %>';
+        var playerID; // id do jogador
+        var cFinished = false; // cehcka se a countdown ja terminou
+        var testinho = 5;
 
         /*Funcoes*/
 
@@ -52,12 +56,20 @@
             var timer = setInterval(function(){
                 socket.emit("Temp_Lobby_Create",segundos,room); 
                 document.getElementById('teste').innerHTML = segundos;
+                testinho = segundos;
                 segundos--;
                 if (segundos < 0) {
+                    //socket.emit("Start",room);
                     clearInterval(timer);
                 }
             }, 1000);
         }
+
+        function player_choose(resposta){
+
+            //socket.emit("resposta")
+
+        };
 
         /*SOCKET FUNCIONAR*/
         socket.on("connect", function(){ // primeira conexão
@@ -68,6 +80,11 @@
         /*EMITE O ID DA SALA*/
         socket.emit("juntar_sala",sala) // juntar à sala de id do url
 
+        /*Guarda o id do jogador*/
+
+        socket.on('PlayerID',function(data){
+                playerId = data;
+        });
 
         /* *****************************
         *                              *
@@ -75,41 +92,33 @@
         *            do Jogo           *
         *                              *
         ***************************** */
+        
         if (host === 'true'){ // actually foi quem criou a sala
-            Temporizador(60,sala); // manda para o servidor a contagem do jogo
-            socket.emit("Start_Game",sala) // Pedido ao servidor para comecar o jogo
-
+            Temporizador(5,sala);
+            
+            
         }
         else{
             socket.on("Lobby_Timer",function(segundos){
 
             document.getElementById('teste').innerHTML = segundos;    
-
+            
             });
         }
-
+    
         /* *****************************
         *                              *
         *        JOGO INICIADO         *
         *                              *
         ***************************** */
 
-        socket.on("Game_Started",function(rounds){ // recebe a resposta do servidor como o jogo tendo iniciado
-
-            //for(var i=0;)
-
+        /*
+        socket.on("Game_Started",function(variavel){
+            //socket.removeListener("Lobby_Timer");
+            divChat.appendChild(ShowMsg(variavel));
 
         });
-
-
-
-        /*
-        if(segundos == 0)
-            emit("comeca",segundos)
-            
         */
-
-
         /* *****************************
         *                              *
         *             CHAT             *

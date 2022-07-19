@@ -1,13 +1,14 @@
 /*Modulos E REQUIREMENTS */
 const express =  require("express");  // importar o modulo do express
 const host = '192.168.1.76'; // ip do meu portatil para todos os dispositivos se poderem ligar a ele
+//192.168.1.76
+//nord 100.67.125.212
 const porta = 5000; //porta que os outros dispositivos irao usar
 const path = require('path');
 const bodyParser = require("body-parser"); // modulo
 var mysql = require("mysql"); // modulo do mysql
 const session = require("express-session"); // modulo das sessoes
 const rs = require("randomstring"); ////criar o hash para os lobbys
-
 var game = require("./game"); // chama o ficheiro do jogo
 
 
@@ -475,7 +476,7 @@ exp.all("*",function(req,res){
 });
 
 
-server.listen(porta,host); // onde ligar
-//server.listen(porta); para local host
+//server.listen(porta,host); // onde ligar
+server.listen(porta); //para local host
 console.log("Funciona no ip e porta http://"+host+":"+porta);
 
