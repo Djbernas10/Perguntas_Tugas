@@ -1,0 +1,60 @@
+body {
+    background: #282d30;
+    overflow-y: scroll;
+}
+
+.gameContainer {
+    background: white;
+    width: 65%;
+    height: 200%;
+    border-radius: 6px;
+    float: right;
+    margin: 5% 3% 1% 1%;
+    padding: 10px;
+    text-align: center;
+   
+
+}
+
+.chatContainer {
+    background: white;
+    width: 25%;
+    height: 500px;
+    border-radius: 6px;
+    float: left;
+    margin: 5% 1% 1% 3%;
+    padding: 10px;
+    text-align: center;
+    
+}
+
+.chatBox {
+    background: #f4f4f4;
+    border-radius: 5px;
+    width: 90%;
+    height: 80%;
+    margin: 5% auto 5% auto;
+    border: 1px solid;
+    border-color: #f4f4f4;
+    overflow-y: scroll;
+}
+
+.chatCell {
+    background: white;
+    width: 100%;
+    height: 7%;
+    margin: auto auto 1px auto;
+    overflow-y: scroll;
+}
+
+.btn {
+    background: #020202;
+    height: 30px;
+    color: white;
+    border-radius: 4px;
+}
+
+.btn:hover {
+    background: #ffffff;
+    color: black;
+}

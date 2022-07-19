@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Lobby</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/fonts/ionicons.min.css">
+    <link rel="stylesheet" href="assets/css/Footer-Basic.css">
+    <link rel="stylesheet" href="assets/css/Login-Form-Dark.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+
+<body style="padding: 0px;">
+    <header style="padding: 0px;">
+        <section style="width: 100%;height: 100%;padding: 0px;">
+            <div class="text-white bg-dark border rounded border-0 p-4 p-md-5" style="text-align: center;background: url(&quot;assets/img/Yellow-Questionmark-banner.jpg&quot;);">
+                <h2 class="fw-bold text-white mb-3" style="border-color: rgb(150,154,157);">Pronto para jogar <%= Nome %> ?</h2>
+                <p class="mb-4">Para sair ou mudar de nome basta clicar no botão abaixo</p>
+                <div class="my-3"><a class="btn btn-light btn-lg" role="button" href="/logout" style="background: rgb(149,153,156);border-color: rgb(149,153,156);color: rgb(255,255,255);width: 25%;text-align: center;">Sair</a></div>
+            </div>
+        </section>
+    </header>
+    <section style="width: 100%;height: 100%;margin-bottom: 5%">
+        <h1 style="text-align: center;width: 100%;height: 50%;margin-top: 1%">Lista de Salas</h1>
+        <div class="container" style="text-align: center; margin-top: 1%">
+            <a class="btn btn-primary" role="button" href="/create_room" style="text-align: center;background: rgb(149,153,156);border-color: rgb(149,153,156);">Criar Sala</a>
+            <button class="btn btn-primary" role="button" style="text-align: center;background: rgb(149,153,156);border-color: rgb(149,153,156); "  onClick="window.location.reload();">Reload</a></div>
+       <div class="container" style="width: 70%;border-style: double;margin-top: 1%;height: 10%;">
+            <div class="table-responsive text-center" style="width: 100%;">
+                <table class="table">
+                    <thead style="width: 100%;text-align: center;">
+                        <tr style="width: 100%;text-align: center;">
+                            <th>Players</th>
+                            <th style="width: 100%;text-align: center;">Link da sala</th>
+                        </tr>
+                    </thead>
+                    <tbody id="Rooms_display">
+
+                        <% for(var i = 0; i< Salas.length; i++){ %>
+                            <tr>
+                                <td><%= Salas[i].players%></td>
+                                <td><a href="sala?id=<%= Salas[i].hash_sala %>"><%= Salas[i].hash_sala %></a></td>
+                            </tr>
+                            <% }%>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+    <footer class="footer-basic" style="background: grey;width: 100%;">
+        <div class="social" style="color: white;"><a href="#"><i class="icon ion-social-instagram"></i></a><a href="#"><i class="icon ion-social-snapchat"></i></a><a href="#"><i class="icon ion-social-twitter"></i></a><a href="#"><i class="icon ion-social-facebook"></i></a></div>
+        <ul class="list-inline" style="color: white;">
+            <li class="list-inline-item"><a href="#">Pagina Inicial</a></li>
+            <li class="list-inline-item"><a href="#">Sobre</a></li>
+            <li class="list-inline-item"><a href="#">Termos e condições</a></li>
+            <li class="list-inline-item"><a href="#">Politicas de Privacidade</a></li>
+        </ul>
+        <p class="copyright" style="color: white;">Perguntas Tugas © 2022</p>
+    </footer>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

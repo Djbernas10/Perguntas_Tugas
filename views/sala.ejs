@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sala</title>
+    <link rel="stylesheet" href="assets/css/room.css">
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/assets/My_js/functions.js"></script>
+</head>
+<body>
+    <h1 style="color: white"> <%= Host %>  </h1>
+    <h1 style="color: white"> <%= Nome %>  </h1>
+    <h1 style="color: white" id="teste"></h1>
+    <section>
+        <form id="form">
+        <div class="chatContainer">
+        <div>Chat</div>
+        <div class="chatBox" id="Msg-Box">
+        </div>
+        <input id="chat-input" style="width: 60%; height: 30px;" autocomplete="off" type="text" /> 
+        <input class="btn" type="submit" value="Send" id="msg-submit" />
+        </div>
+        </form>
+    </section>
+    <script type="text/javascript">
+
+        
+        /*VARIAVEIS*/
+
+        var socket = io.connect("http://192.168.1.76:5000"); // para rede local
+        //var socket = io.connect("http://localhost:5000"); // para local host
+        var divChat = document.querySelector('#Msg-Box');
+        var form = document.getElementById('form');
+        var msgInput = document.getElementById("chat-input");
+        const params = new URLSearchParams(window.location.search);
+        var sala = params.get("id");// guarda o id da sala de jogo
+        var host = '<%= Host %>';
+
+        /*Funcoes*/
+
+        function ShowMsg(text){ // retorna a msg a colocar no chatbox
+
+            let p = document.createElement("p");
+            p.textContent = text;
+            return p
+
+        };
+
+        function Temporizador(segundos,room){ // funcao de temporizador
+            var timer = setInterval(function(){
+                socket.emit("Temp_Lobby_Create",segundos,room); 
+                document.getElementById('teste').innerHTML = segundos;
+                segundos--;
+                if (segundos < 0) {
+                    clearInterval(timer);
+                }
+            }, 1000);
+        }
+
+        /*SOCKET FUNCIONAR*/
+        socket.on("connect", function(){ // primeira conexão
+            divChat.appendChild(ShowMsg(`Conectou com id: ${socket.id}`));
+
+        });
+        
+        /*EMITE O ID DA SALA*/
+        socket.emit("juntar_sala",sala) // juntar à sala de id do url
+
+
+        /* *****************************
+        *                              *
+        *    Temporizador do inicio    *
+        *            do Jogo           *
+        *                              *
+        ***************************** */
+        if (host === 'true'){ // actually foi quem criou a sala
+            Temporizador(60,sala); // manda para o servidor a contagem do jogo
+            socket.emit("Start_Game",sala) // Pedido ao servidor para comecar o jogo
+
+        }
+        else{
+            socket.on("Lobby_Timer",function(segundos){
+
+            document.getElementById('teste').innerHTML = segundos;    
+
+            });
+        }
+
+        /* *****************************
+        *                              *
+        *        JOGO INICIADO         *
+        *                              *
+        ***************************** */
+
+        socket.on("Game_Started",function(rounds){ // recebe a resposta do servidor como o jogo tendo iniciado
+
+            for(var i =0;)
+
+
+        });
+
+
+
+        /*
+        if(segundos == 0)
+            emit("comeca",segundos)
+            
+        */
+
+
+        /* *****************************
+        *                              *
+        *             CHAT             *
+        *                              *
+        ***************************** */
+
+        /*CHAT*/
+        socket.on("receber_msg", function(mensagem){ // receber msgs do servidor
+
+            divChat.appendChild(ShowMsg(mensagem));// imprime a msg na box de chat
+
+        });
+        
+        /*Submit MSG*/
+        form.addEventListener("submit",function(e){ // evento de enviar a msg
+
+            e.preventDefault();
+
+            var msg =  msgInput.value; // guarda o que esta no input de texto
+
+
+           if (msg === "") return
+           divChat.appendChild(ShowMsg(msg)); // mostra a msg no chat
+
+           socket.emit("enviar_msg", msg, sala); // envia msg so para a sala de id do url
+
+           msgInput.value = ""; // reset do campo da msg
+
+        });
+    
+
+    </script>
+</body>
+</html>
