@@ -21,7 +21,8 @@ exports.iniciar = function(socket){
         if (sala in players) {        
         }
         else{
-            players[sala]=[];   
+            //console.log(typeof(sala));
+            players[sala]=[];    // cria o arreio com o did a sala como chave
         }
 
         
@@ -31,10 +32,11 @@ exports.iniciar = function(socket){
         SOCKET_LIST[playerId] = socket;
         players[sala].push(objeto)// id do jogador, pontuacao atual da ronda, resposta a uma pergunta
         //emite o id do player
-        socket.emit("PlayerID", playerId);
+        socket.emit("PlayerID", playerId); // emite o id do jogador (nao o id do socket)
         //console.log(jsonFile["Perguntas"][0]);
-        console.log(players);
+        //console.log(players);
         //checkA(sala);
+       // genQ(sala); // temporario
     });
 
     /*
@@ -68,14 +70,18 @@ exports.iniciar = function(socket){
     respostas - respostas possiveis - depois comparar com o meu ficheiros json ou bd
     */
 
-    /*   
+      
     socket.on("Start",function(room){ // rteceb resposta do cliente para comecar o jogo após o countdown
         console.log(room);
-        var variavel = 3;
-        console.log(variavel);
-        socket.to(room).emit("Game_Started",variavel); // numero de rondas
+        var rondas = 3;
+        console.log(rondas);
+        socket.to(room).emit("Game_Started",rondas,function(response){
+            console.log(response)
+            console.log(response.status);
+
+        }); // numero de rondas
     });
-*/
+
         /* *****************************
         *                              *
         *             CHAT             *
@@ -96,20 +102,32 @@ exports.iniciar = function(socket){
     
     function genQ(sala){//gerar questão
     
-        let rIndex =  Math.floor(Math.random() * jsonFile["Perguntas"].length); //gera o indice para qual sera usado apora sselecionar o tema
+        let rIndex =  Math.floor(Math.random() * jsonFile["Perguntas"].length); //gera o indice para qual sera usado apora selecionar o tema
         let objQ = jsonFile["Perguntas"][rIndex] // guarda o tema na variavel
+        console.log(objQ);
         estado = 1 // resultados
 
 
-        socket.to(sala).emit("Questão",objQ);
+        socket.to(sala).emit("Questão",objQ,rIndex); // eniva a questão para a sala respetiva
+
 
     };
 
+    function playerWinCheck (resposta,rIndex){
 
-    function checkA(sala){
+        var playerWins = false; // variavel para checkar se ganhou
+        //resposta eé a string da resposta
+   
+        if(resposta == jsonFile["Perguntas"][rIndex]["Resposta"] ) // [0] for igual à resposta certa do json 
+            playerWins = true;
+
+        return playerWins;
+    }
+
+    function checkA(sala){ // checkar a resposta
 
         for(var player in players[sala]){
-            //console.log(player)
+            console.log(player)
             /*
             var playerWin = playerWinCheck(players[i].move);
             if(playerWin){
@@ -122,6 +140,6 @@ exports.iniciar = function(socket){
 
     setInterval(function(){
         //envia uma questao a cada 30 segundos  
-        genQ();
-    }, 3000);
+        //genQ();
+    }, 30000);
 }

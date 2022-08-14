@@ -30,8 +30,8 @@
         /*VARIAVEIS*/
         //192.168.1.76
         //nord 100.67.125.212
-        //var socket = io.connect("http://192.168.1.76:5000"); // para rede local
-        var socket = io.connect("http://localhost:5000"); // para local host
+        var socket = io.connect("http://192.168.1.76:5000"); // para rede local
+        //var socket = io.connect("http://localhost:5000"); // para local host
         var divChat = document.querySelector('#Msg-Box');
         var form = document.getElementById('form');
         var msgInput = document.getElementById("chat-input");
@@ -59,7 +59,7 @@
                 testinho = segundos;
                 segundos--;
                 if (segundos < 0) {
-                    //socket.emit("Start",room);
+                    socket.emit("Start",room); //comeca o jogo
                     clearInterval(timer);
                 }
             }, 1000);
@@ -83,7 +83,8 @@
         /*Guarda o id do jogador*/
 
         socket.on('PlayerID',function(data){
-                playerId = data;
+                playerId = data; // guarda o id do jogador vindo do servidor
+                console.log(playerID);
         });
 
         /* *****************************
@@ -93,17 +94,27 @@
         *                              *
         ***************************** */
         
-        if (host === 'true'){ // actually foi quem criou a sala
+        if (host === 'true'){ // host
             Temporizador(5,sala);
-            
+            console.log(sala);
+            socket.on("Game_Started",function(rondas,callback){
+
+                console.log(rondas);
+
+                callback({
+                    status: "ok"
+                });
+            });
             
         }
-        else{
+        else{// not host
             socket.on("Lobby_Timer",function(segundos){
 
             document.getElementById('teste').innerHTML = segundos;    
             
             });
+
+
         }
     
         /* *****************************
@@ -119,6 +130,7 @@
 
         });
         */
+
         /* *****************************
         *                              *
         *             CHAT             *
