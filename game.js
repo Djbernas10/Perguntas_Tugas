@@ -4,10 +4,9 @@ var SOCKET_LIST = [];
 var players = {};
 const jsonFile = require("./questions.json")
 var estado = 0 // 0 -fase de resposta 1- fase de resultados
-exports.iniciar = function(socket){
+exports.iniciar = function(socket,tempName){
     //Conexão
     gameSocket = socket
-
     //checkA();
 
     let lTimer = 100
@@ -16,21 +15,23 @@ exports.iniciar = function(socket){
 
     /* JUNTAR À SALA */
     socket.on("juntar_sala",function(sala){ //juntar ao respetivo id da sala de jogo
-
         //checka para a exisitencia da sala no arreio de players
         if (sala in players) {        
         }
         else{
             //console.log(typeof(sala));
-            players[sala]=[];    // cria o arreio com o did a sala como chave
+            players[sala]=[];    // cria o arreio com o id da sala como chave
         }
 
         
         socket.join(sala);// juntar a respetiva sala
         var playerId = Math.random();
-        var objeto = {id: playerId, pontuacao:0, resposta:null}; //objeto do jogador
+        var pObjeto = {player_name:tempName,socket_id: socket.id, pontuacao:0, resposta:null}; //objeto do jogador
         SOCKET_LIST[playerId] = socket;
-        players[sala].push(objeto)// id do jogador, pontuacao atual da ronda, resposta a uma pergunta
+        players[sala].push(pObjeto)// id do jogador, pontuacao atual da ronda, resposta a uma pergunta
+        console.log(players)
+        
+        
         //emite o id do player
         socket.emit("PlayerID", playerId); // emite o id do jogador (nao o id do socket)
         //console.log(jsonFile["Perguntas"][0]);
@@ -72,14 +73,9 @@ exports.iniciar = function(socket){
 
       
     socket.on("Start",function(room){ // rteceb resposta do cliente para comecar o jogo após o countdown
-        console.log(room);
         var rondas = 3;
-        console.log(rondas);
-        socket.to(room).emit("Game_Started",rondas,function(response){
-            console.log(response)
-            console.log(response.status);
-
-        }); // numero de rondas
+        //console.log(room);
+        socket.to(room).emit("gamestart", rondas); // numero de rondas
     });
 
         /* *****************************
@@ -143,3 +139,7 @@ exports.iniciar = function(socket){
         //genQ();
     }, 30000);
 }
+
+// e4mit all sop pra sala em espe4cifico 
+//mehlorar o objeto total das salas com o id(da db) do user e o nome
+// on disconnect para dar refresh do socket.

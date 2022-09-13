@@ -1,9 +1,9 @@
 /*Modulos E REQUIREMENTS */
 const express =  require("express");  // importar o modulo do express
-const host = '192.168.1.76'; // ip do meu portatil para todos os dispositivos se poderem ligar a ele
-//192.168.1.76
+const host = '192.168.1.207'; // ip do meu portatil para todos os dispositivos se poderem ligar a ele
+//192.168.1.75
 //nord 100.67.125.212
-const porta = 5000; //porta que os outros dispositivos irao usar
+const porta = 8081; //porta que os outros dispositivos irao usar
 const path = require('path');
 const bodyParser = require("body-parser"); // modulo
 var mysql = require("mysql"); // modulo do mysql
@@ -55,6 +55,8 @@ const exp = express();// cria o servidor express
 /* criacao do servidor http */
 var server = require("http").createServer(exp);
 
+/* Name Handler*/
+var tempName = null;
 
 /*Sessões */
 //inicializa a sessao
@@ -79,7 +81,8 @@ exp.set("view engine","ejs"); //estabelece a view engine neste caso estou a usar
 
 io.on('connection',function(socket){ // saber se alguem conectou
     console.log(`Alguem conectou ${socket.id}`);
-    game.iniciar(socket); // entra no ficheiro do jogo
+    //console.log(tempName);
+    game.iniciar(socket,tempName); // entra no ficheiro do jogo
 
 });
 
@@ -461,7 +464,7 @@ exp.get("/sala",function(req,res){
 
     
 
-    
+    tempName = sess.username;
     res.render("sala", {Nome: sess.username, Host:sess.host});
 
     con.end
