@@ -40,6 +40,10 @@ exports.iniciar = function(socket,tempName){
        // genQ(sala); // temporario
     });
 
+
+    /*DISCONNECT */
+
+  
     /*
     // Host Events
     gameSocket.on('hostCreateNewGame', hostCreateNewGame);

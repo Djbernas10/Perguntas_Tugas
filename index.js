@@ -1,6 +1,6 @@
 /*Modulos E REQUIREMENTS */
 const express =  require("express");  // importar o modulo do express
-const host = '192.168.1.207'; // ip do meu portatil para todos os dispositivos se poderem ligar a ele
+const host = '192.168.1.75'; // ip do meu portatil para todos os dispositivos se poderem ligar a ele
 //192.168.1.75
 //nord 100.67.125.212
 const porta = 8081; //porta que os outros dispositivos irao usar

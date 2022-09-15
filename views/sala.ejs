@@ -28,9 +28,9 @@
 
         
         /*VARIAVEIS*/
-        //192.168.1.76
+        //192.168.1.75
         //nord 100.67.125.212
-        var socket = io.connect("http://192.168.1.76:5000"); // para rede local
+        var socket = io.connect("http://192.168.1.75:8081/"); // para rede local
         //var socket = io.connect("http://localhost:5000"); // para local host
         var divChat = document.querySelector('#Msg-Box');
         var form = document.getElementById('form');
@@ -38,6 +38,7 @@
         const params = new URLSearchParams(window.location.search);
         var sala = params.get("id");// guarda o id da sala de jogo
         var host = '<%= Host %>';
+        var Nome = '<%= Nome %>'
         var playerID; // id do jogador
         var cFinished = false; // cehcka se a countdown ja terminou
         var testinho = 5;
@@ -59,8 +60,11 @@
                 testinho = segundos;
                 segundos--;
                 if (segundos < 0) {
-                    socket.emit("Start",room); //comeca o jogo
+                    //socket.emit("Start",room); //comeca o jogo
                     clearInterval(timer);
+                    socket.emit("Start",room);
+                    //console.log("START");
+                   
                 }
             }, 1000);
         }
@@ -74,17 +78,17 @@
         /*SOCKET FUNCIONAR*/
         socket.on("connect", function(){ // primeira conexão
             divChat.appendChild(ShowMsg(`Conectou com id: ${socket.id}`));
-
+            socket.emit("juntar_sala",sala);
         });
-        
+
         /*EMITE O ID DA SALA*/
-        socket.emit("juntar_sala",sala) // juntar à sala de id do url
+        //socket.emit("juntar_sala",sala);// juntar à sala de id do url
 
         /*Guarda o id do jogador*/
 
         socket.on('PlayerID',function(data){
                 playerId = data; // guarda o id do jogador vindo do servidor
-                console.log(playerID);
+                //console.log(playerID);
         });
 
         /* *****************************
@@ -96,7 +100,9 @@
         
         if (host === 'true'){ // host
             Temporizador(5,sala);
+            //socket.emit("Start",room);
             console.log(sala);
+            /*
             socket.on("Game_Started",function(rondas,callback){
 
                 console.log(rondas);
@@ -105,6 +111,7 @@
                     status: "ok"
                 });
             });
+            */
             
         }
         else{// not host
@@ -123,13 +130,13 @@
         *                              *
         ***************************** */
 
-        /*
-        socket.on("Game_Started",function(variavel){
-            //socket.removeListener("Lobby_Timer");
-            divChat.appendChild(ShowMsg(variavel));
+        
+        socket.on("gamestart",function(rondas){
+            console.log("LOG");
+            //divChat.appendChild(ShowMsg(variavel));
 
         });
-        */
+        
 
         /* *****************************
         *                              *
