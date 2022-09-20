@@ -1,8 +1,9 @@
 /*Modulos E REQUIREMENTS */
 const express =  require("express");  // importar o modulo do express
-const host = '192.168.1.75'; // ip do meu portatil para todos os dispositivos se poderem ligar a ele
+const host = '192.168.1.5'; // ip do meu portatil para todos os dispositivos se poderem ligar a ele
 //192.168.1.75
 //nord 100.67.125.212
+//192.168.1.5
 const porta = 8081; //porta que os outros dispositivos irao usar
 const path = require('path');
 const bodyParser = require("body-parser"); // modulo
@@ -479,7 +480,7 @@ exp.all("*",function(req,res){
 });
 
 
-server.listen(porta,host); // onde ligar
+server.listen(porta); // onde ligar
 //server.listen(porta); //para local host
 console.log("Funciona no ip e porta http://"+host+":"+porta);
 

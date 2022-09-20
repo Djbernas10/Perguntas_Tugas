@@ -30,8 +30,9 @@
         /*VARIAVEIS*/
         //192.168.1.75
         //nord 100.67.125.212
-        var socket = io.connect("http://192.168.1.75:8081/"); // para rede local
-        //var socket = io.connect("http://localhost:5000"); // para local host
+        //var socket = io.connect("http://192.168.1.5:8081/"); // para rede local
+        var socket = io.connect("http://localhost:8081"); // para local host
+        //192.168.1.5
         var divChat = document.querySelector('#Msg-Box');
         var form = document.getElementById('form');
         var msgInput = document.getElementById("chat-input");
@@ -60,9 +61,9 @@
                 testinho = segundos;
                 segundos--;
                 if (segundos < 0) {
-                    //socket.emit("Start",room); //comeca o jogo
+                    
                     clearInterval(timer);
-                    socket.emit("Start",room);
+                    socket.emit("Start",host);
                     //console.log("START");
                    
                 }
@@ -101,28 +102,47 @@
         if (host === 'true'){ // host
             Temporizador(5,sala);
             //socket.emit("Start",room);
-            console.log(sala);
-            /*
-            socket.on("Game_Started",function(rondas,callback){
+            //console.log(sala);
+            
+            socket.on("Game_Start_Host",function(players,rondas){
 
                 console.log(rondas);
 
-                callback({
-                    status: "ok"
-                });
             });
-            */
+            
             
         }
         else{// not host
             socket.on("Lobby_Timer",function(segundos){
 
-            document.getElementById('teste').innerHTML = segundos;    
-            
+            document.getElementById('teste').innerHTML = segundos;  
+            if(segundos === 0){
+                socket.off('Lobby_Timer') 
+            } 
             });
+
+            socket.on("Game_Start_Player",function(player){
+
+
+
+            });
+
+        
 
 
         }
+
+        socket.on("teste",function(players){
+            
+            for(var i=0;i<players[sala].length;i++){
+                if( Nome  == players[sala][i]["player_name"]){ //checka a existencia do jgoador na sala
+                    //console.log(sala);
+                    //console.log("existe pra este");
+                    //console.log(players);
+                    
+                }
+            }
+        });
     
         /* *****************************
         *                              *
@@ -143,7 +163,7 @@
         *             CHAT             *
         *                              *
         ***************************** */
-
+        
         /*CHAT*/
         socket.on("receber_msg", function(mensagem){ // receber msgs do servidor
 
@@ -167,8 +187,7 @@
            msgInput.value = ""; // reset do campo da msg
 
         });
-    
-
+        
     </script>
 </body>
 </html>

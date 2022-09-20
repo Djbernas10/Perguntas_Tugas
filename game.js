@@ -2,8 +2,26 @@ var gameSocket // socket do jogo
 //var temas = ["Ciencias","Desporto","Entretenimento","Historia","Arte","Geografia"]; // arreio de temas disponiveis para random~
 var SOCKET_LIST = [];
 var players = {};
+var player_backup = {};
 const jsonFile = require("./questions.json")
-var estado = 0 // 0 -fase de resposta 1- fase de resultados
+var estado = 0 // 0 -fase de resposta 1- fase de resultados~
+
+/* FUNCTIONS */
+
+function socketFlush(name,socket_id,sala){ //flush do socket
+    
+    for(var i=0;i<players[sala].length;i++){
+
+        if(players[sala][i]["player_name"]==name){
+            if(players[sala][i]["socket_id"]!=socket_id){
+                players[sala][i]["socket_id"]  = socket_id; //da flush do socket pelo novo
+            }
+        }
+
+    }
+
+}
+
 exports.iniciar = function(socket,tempName){
     //Conexão
     gameSocket = socket
@@ -16,24 +34,38 @@ exports.iniciar = function(socket,tempName){
     /* JUNTAR À SALA */
     socket.on("juntar_sala",function(sala){ //juntar ao respetivo id da sala de jogo
         //checka para a exisitencia da sala no arreio de players
+        /*
         if (sala in players) {        
         }
         else{
             //console.log(typeof(sala));
+            */
             players[sala]=[];    // cria o arreio com o id da sala como chave
-        }
+        //}
 
-        
-        socket.join(sala);// juntar a respetiva sala
+    
+            
+        socket.join(sala);// juntar a respetiva sala comum
+        console.log(socket.id);
+        socket.join(socket.id);//privado
         var playerId = Math.random();
         var pObjeto = {player_name:tempName,socket_id: socket.id, pontuacao:0, resposta:null}; //objeto do jogador
-        SOCKET_LIST[playerId] = socket;
+            //objeto do jogador
+       // if(players[sala]["player_name"].find)
+
+
+       /// e4scolher a sala
+       // encontrar o nome
+       //mudar o socket id
+        SOCKET_LIST[tempName] = socket;
+        //console.log(SOCKET_LIST);
         players[sala].push(pObjeto)// id do jogador, pontuacao atual da ronda, resposta a uma pergunta
-        console.log(players)
+        socketFlush(tempName,socket.id,sala); //flush do socket
+        //console.log(players);
         
         
         //emite o id do player
-        socket.emit("PlayerID", playerId); // emite o id do jogador (nao o id do socket)
+        //socket.emit("PlayerID", playerId); // emite o id do jogador (nao o id do socket)
         //console.log(jsonFile["Perguntas"][0]);
         //console.log(players);
         //checkA(sala);
@@ -42,8 +74,10 @@ exports.iniciar = function(socket,tempName){
 
 
     /*DISCONNECT */
+    socket.on("disconnect",function(){
 
-  
+    });
+    
     /*
     // Host Events
     gameSocket.on('hostCreateNewGame', hostCreateNewGame);
@@ -76,10 +110,37 @@ exports.iniciar = function(socket,tempName){
     */
 
       
-    socket.on("Start",function(room){ // rteceb resposta do cliente para comecar o jogo após o countdown
+    socket.on("Start",function(host){ // rteceb resposta do cliente para comecar o jogo após o countdown
         var rondas = 3;
+        var teste = "funcionou";
+        
         //console.log(room);
-        socket.to(room).emit("gamestart", rondas); // numero de rondas
+        /*
+        for(var i=0;i<players[room].length;i++){
+
+            console.log("chegou");
+            var channel = String(players[room][i]["socket_id"]);
+            console.log(channel);
+            //socket.broadcast.to(players[room][i]["socket_id"]).emit('teste',teste);
+            //socket.emit("teste",teste);
+            socket.to(players[room][i]["socket_id"]).emit("teste",teste);
+        }
+        */
+        //console.log(typeof(room));
+
+        if(host === true){ // é Host
+
+            socket.emit("Game_Start_Host",players,rondas);
+
+        }
+        else{
+
+            socket.emit("Game_Start_Players",players);
+
+        }
+
+        socket.emit("teste",players);
+        //socket.to(room).emit("gamestart", rondas); // numero de rondas
     });
 
         /* *****************************
@@ -87,13 +148,13 @@ exports.iniciar = function(socket,tempName){
         *             CHAT             *
         *                              *
         ***************************** */
-
+    
     socket.on("enviar_msg",function(msg,sala){ // ouve o evento de mandar msg
         socket.to(sala).emit("receber_msg", msg);
         console.log(msg);
 
     });
-
+    
         /* *****************************
         *                              *
         *            FUNCOES           *
