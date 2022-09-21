@@ -92,7 +92,6 @@ exports.iniciar = function(socket,tempName){
         /* *****************************
         *                              *
         *             Start            *
-        *           Next Round         *
         *                              *
         * **************************** */
 
@@ -110,38 +109,31 @@ exports.iniciar = function(socket,tempName){
     */
 
       
-    socket.on("Start",function(host){ // rteceb resposta do cliente para comecar o jogo após o countdown
-        var rondas = 3;
-        var teste = "funcionou";
-        
-        //console.log(room);
-        /*
-        for(var i=0;i<players[room].length;i++){
-
-            console.log("chegou");
-            var channel = String(players[room][i]["socket_id"]);
-            console.log(channel);
-            //socket.broadcast.to(players[room][i]["socket_id"]).emit('teste',teste);
-            //socket.emit("teste",teste);
-            socket.to(players[room][i]["socket_id"]).emit("teste",teste);
-        }
-        */
-        //console.log(typeof(room));
-
-        if(host === true){ // é Host
-
-            socket.emit("Game_Start_Host",players,rondas);
-
-        }
-        else{
-
-            socket.emit("Game_Start_Players",players);
-
-        }
-
-        socket.emit("teste",players);
-        //socket.to(room).emit("gamestart", rondas); // numero de rondas
+    socket.on("Start",function(){ // rteceb resposta do cliente para comecar o jogo após o countdown
+        var rondas = 5; //5 rondas
+        var secs = 30; // 30 segundos por ronda
+        genQ();
+        socket.emit("Game_Start",players,rondas,secs);
     });
+
+
+    socket.on("Round_Timer_Server",function(segundos,room){
+
+        socket.to(room).emit("Round_Timer_Client",segundos); 
+    });
+
+       /* *****************************
+        *                              *
+        *             Start            *
+        *                              *
+        * **************************** */
+
+       socket.on("Next_Round",function(){
+            var questao =  genQ();// gera a questao a entregar aos jogadores
+            socket.to(room).emit("",questao); //emit para os users da sala
+       });
+
+
 
         /* *****************************
         *                              *
@@ -161,7 +153,7 @@ exports.iniciar = function(socket,tempName){
         *                              *
         ***************************** */
     
-    function genQ(sala){//gerar questão
+    function genQ(){//gerar questão
     
         let rIndex =  Math.floor(Math.random() * jsonFile["Perguntas"].length); //gera o indice para qual sera usado apora selecionar o tema
         let objQ = jsonFile["Perguntas"][rIndex] // guarda o tema na variavel
@@ -169,7 +161,7 @@ exports.iniciar = function(socket,tempName){
         estado = 1 // resultados
 
 
-        socket.to(sala).emit("Questão",objQ,rIndex); // eniva a questão para a sala respetiva
+        //socket.to(sala).emit("Questão",objQ,rIndex); // eniva a questão para a sala respetiva
 
 
     };

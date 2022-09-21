@@ -42,7 +42,7 @@
         var Nome = '<%= Nome %>'
         var playerID; // id do jogador
         var cFinished = false; // cehcka se a countdown ja terminou
-        var testinho = 5;
+      //  var testinho = 5;
 
         /*Funcoes*/
 
@@ -63,9 +63,23 @@
                 if (segundos < 0) {
                     
                     clearInterval(timer);
-                    socket.emit("Start",host);
-                    //console.log("START");
+                    socket.emit("Start");
                    
+                }
+            }, 1000);
+        }
+
+        function Round_Timer(segundos,room){
+            var timer = setInterval(function(){
+                socket.emit("Round_Timer_Server",segundos,room); // envia os segundos para todos os jogadores
+                document.getElementById('teste').innerHTML = segundos;
+                testinho = segundos;
+                segundos--;
+                if (segundos < 0) {
+
+                    clearInterval(timer);
+                    socket.emit("Next_Round");//comeca a proxima ronda
+
                 }
             }, 1000);
         }
@@ -100,17 +114,7 @@
         ***************************** */
         
         if (host === 'true'){ // host
-            Temporizador(5,sala);
-            //socket.emit("Start",room);
-            //console.log(sala);
-            
-            socket.on("Game_Start_Host",function(players,rondas){
-
-                console.log(rondas);
-
-            });
-            
-            
+            Temporizador(5,sala);  
         }
         else{// not host
             socket.on("Lobby_Timer",function(segundos){
@@ -120,44 +124,51 @@
                 socket.off('Lobby_Timer') 
             } 
             });
-
-            socket.on("Game_Start_Player",function(player){
-
-
-
-            });
-
-        
-
-
         }
 
-        socket.on("teste",function(players){
-            
-            for(var i=0;i<players[sala].length;i++){
-                if( Nome  == players[sala][i]["player_name"]){ //checka a existencia do jgoador na sala
-                    //console.log(sala);
-                    //console.log("existe pra este");
-                    //console.log(players);
-                    
-                }
-            }
-        });
-    
         /* *****************************
         *                              *
         *        JOGO INICIADO         *
         *                              *
+        ***************************** */ 
+        
+        /*
+        socket.on("Game_Start",function(players,rondas,secs){
+
+            console.log("HERE");
+            console.log(rondas);
+            console.log(secs);
+
+        });
+        */
+        if (host === 'true'){ // se for host pede e envia as questoes
+            socket.on("Game_Cycle",function(players,rondas,secs){
+
+                console.log("HERE");
+                console.log(rondas);
+                console.log(secs);
+                
+                for(var i=0;i<rondas;i++){
+                    Round_Timer(secs,sala)
+
+                }
+             });
+        }
+
+
+        /* *****************************
+        *                              *
+        *            Rondas            *
+        *                              *
         ***************************** */
 
-        
-        socket.on("gamestart",function(rondas){
-            console.log("LOG");
-            //divChat.appendChild(ShowMsg(variavel));
+        socket.on("Round_Timer_Client",function(segundos,questao){//guarda os segundos e a pergunta comum a todos os utilizadores do lobby
+
+
+            
 
         });
         
-
         /* *****************************
         *                              *
         *             CHAT             *
