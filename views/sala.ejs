@@ -10,9 +10,19 @@
     <script src="/assets/My_js/functions.js"></script>
 </head>
 <body>
+    
     <h1 style="color: white"> <%= Host %>  </h1>
     <h1 style="color: white"> <%= Nome %>  </h1>
+    
     <h1 style="color: white" id="teste"></h1>
+    <h1 style="color: white" id="tema"></h1>
+    <h1 style="color: white" id="pergunta"></h1>
+    <button type="button" id="resposta1"></button>
+    <button type="button" id="resposta2"></button>
+    <button type="button" id="resposta3"></button>
+    <button type="button" id="resposta4"></button>
+
+    
     <section>
         <form id="form">
         <div class="chatContainer">
@@ -30,8 +40,8 @@
         /*VARIAVEIS*/
         //192.168.1.75
         //nord 100.67.125.212
-        //var socket = io.connect("http://192.168.1.5:8081/"); // para rede local
-        var socket = io.connect("http://localhost:8081"); // para local host
+        var socket = io.connect("http://192.168.1.5:8081"); // para rede local
+        //var socket = io.connect("http://localhost:8081"); // para local host
         //192.168.1.5
         var divChat = document.querySelector('#Msg-Box');
         var form = document.getElementById('form');
@@ -63,22 +73,22 @@
                 if (segundos < 0) {
                     
                     clearInterval(timer);
-                    socket.emit("Start");
+                    socket.emit("Start",room);
                    
                 }
             }, 1000);
         }
 
-        function Round_Timer(segundos,room){
+        function Round_Timer(segundos,room,rounds){
             var timer = setInterval(function(){
                 socket.emit("Round_Timer_Server",segundos,room); // envia os segundos para todos os jogadores
                 document.getElementById('teste').innerHTML = segundos;
                 testinho = segundos;
                 segundos--;
                 if (segundos < 0) {
-
+                    console.log("END ROUND");
                     clearInterval(timer);
-                    socket.emit("Next_Round");//comeca a proxima ronda
+                    socket.emit("GenQ",room);//comeca a proxima ronda
 
                 }
             }, 1000);
@@ -114,7 +124,9 @@
         ***************************** */
         
         if (host === 'true'){ // host
-            Temporizador(5,sala);  
+            console.log(sala)
+            Temporizador(30,sala);
+              
         }
         else{// not host
             socket.on("Lobby_Timer",function(segundos){
@@ -131,43 +143,42 @@
         *        JOGO INICIADO         *
         *                              *
         ***************************** */ 
-        
-        /*
-        socket.on("Game_Start",function(players,rondas,secs){
 
-            console.log("HERE");
-            console.log(rondas);
-            console.log(secs);
+        socket.on("Round",function(room,rounds,secs,questao){
+           
+            if (sala == room ){
+                if (rounds != 0){
+                console.log("ROUND");
+                console.log(questao);
+                document.getElementById('tema').innerHTML = questao["Tema"];
+                document.getElementById('pergunta').innerHTML = questao["Pergunta"];
+                document.getElementById('resposta1').innerHTML = questao["Resposta"];
 
-        });
-        */
-        if (host === 'true'){ // se for host pede e envia as questoes
-            socket.on("Game_Cycle",function(players,rondas,secs){
-
-                console.log("HERE");
-                console.log(rondas);
-                console.log(secs);
-                
-                for(var i=0;i<rondas;i++){
-                    Round_Timer(secs,sala)
-
+                if (host ==='true')
+                {
+                    Round_Timer(secs,sala,rounds);
                 }
-             });
+            }
+            else{
+            window.location.replace("http://192.168.1.5:8081/lobby_search"); 
+            }    
         }
+        });
 
 
-        /* *****************************
+         /* *****************************
         *                              *
-        *            Rondas            *
+        *         Temporizador         *
+        *            do Jogo           *
         *                              *
         ***************************** */
 
-        socket.on("Round_Timer_Client",function(segundos,questao){//guarda os segundos e a pergunta comum a todos os utilizadores do lobby
-
-
-            
-
+        //timer para nao hosts
+        if (host != 'true'){
+        socket.on("Round_Timer_Client",function(segundos){//guarda os segundos e a pergunta comum a todos os utilizadores do lobby
+            document.getElementById('teste').innerHTML = segundos;
         });
+        }
         
         /* *****************************
         *                              *
@@ -187,7 +198,7 @@
 
             e.preventDefault();
 
-            var msg =  msgInput.value; // guarda o que esta no input de texto
+            var msg =  Nome +": "+msgInput.value; // guarda o que esta no input de texto
 
 
            if (msg === "") return

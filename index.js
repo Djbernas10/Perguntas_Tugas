@@ -480,7 +480,7 @@ exp.all("*",function(req,res){
 });
 
 
-server.listen(porta); // onde ligar
+server.listen(porta,host); // onde ligar
 //server.listen(porta); //para local host
 console.log("Funciona no ip e porta http://"+host+":"+porta);
 

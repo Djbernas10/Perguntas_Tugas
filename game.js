@@ -2,7 +2,9 @@ var gameSocket // socket do jogo
 //var temas = ["Ciencias","Desporto","Entretenimento","Historia","Arte","Geografia"]; // arreio de temas disponiveis para random~
 var SOCKET_LIST = [];
 var players = {};
+var rounds = {};
 var player_backup = {};
+var round_secs = 30;
 const jsonFile = require("./questions.json")
 var estado = 0 // 0 -fase de resposta 1- fase de resultados~
 
@@ -109,16 +111,16 @@ exports.iniciar = function(socket,tempName){
     */
 
       
-    socket.on("Start",function(){ // rteceb resposta do cliente para comecar o jogo após o countdown
-        var rondas = 5; //5 rondas
-        var secs = 30; // 30 segundos por ronda
-        genQ();
-        socket.emit("Game_Start",players,rondas,secs);
+    socket.on("Start",function(room){ // rteceb resposta do cliente para comecar o jogo após o countdown
+        rounds[room] = 5; // cira a sala nas rooms e dálhe o numero de rondas //5 rondas
+        var questao = genQ();
+        console.log(rounds);
+        console.log(questao);
+        socket.emit("Round",room,rounds[room],round_secs,questao);
     });
 
 
     socket.on("Round_Timer_Server",function(segundos,room){
-
         socket.to(room).emit("Round_Timer_Client",segundos); 
     });
 
@@ -128,11 +130,13 @@ exports.iniciar = function(socket,tempName){
         *                              *
         * **************************** */
 
-       socket.on("Next_Round",function(){
+       socket.on("GenQ",function(room){
+           // console.log("é esta");
+            console.log(room)
+            rounds[room] -=1; // diminui do total de rondas 
             var questao =  genQ();// gera a questao a entregar aos jogadores
-            socket.to(room).emit("",questao); //emit para os users da sala
+            socket.emit("Round",room,rounds[room],round_secs,questao,); //emit para os users da sala
        });
-
 
 
         /* *****************************
@@ -157,10 +161,10 @@ exports.iniciar = function(socket,tempName){
     
         let rIndex =  Math.floor(Math.random() * jsonFile["Perguntas"].length); //gera o indice para qual sera usado apora selecionar o tema
         let objQ = jsonFile["Perguntas"][rIndex] // guarda o tema na variavel
-        console.log(objQ);
+        //console.log(objQ);
         estado = 1 // resultados
 
-
+        return objQ;
         //socket.to(sala).emit("Questão",objQ,rIndex); // eniva a questão para a sala respetiva
 
 
