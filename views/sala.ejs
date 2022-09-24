@@ -40,7 +40,7 @@
         /*VARIAVEIS*/
         //192.168.1.75
         //nord 100.67.125.212
-        var socket = io.connect("http://192.168.1.5:8081"); // para rede local
+        var socket = io.connect("http://192.168.1.75:8081"); // para rede local
         //var socket = io.connect("http://localhost:8081"); // para local host
         //192.168.1.5
         var divChat = document.querySelector('#Msg-Box');
@@ -52,6 +52,7 @@
         var Nome = '<%= Nome %>'
         var playerID; // id do jogador
         var cFinished = false; // cehcka se a countdown ja terminou
+        var botoes = document.getElementsByTagName("button");
       //  var testinho = 5;
 
         /*Funcoes*/
@@ -88,21 +89,37 @@
                 if (segundos < 0) {
                     console.log("END ROUND");
                     clearInterval(timer);
+                    //let pergunta = document.getElementById("pergunta");
                     socket.emit("GenQ",room);//comeca a proxima ronda
 
                 }
             }, 1000);
         }
 
-        function player_choose(resposta){
+        function hide_buttons(){
+            for(var i = 0; i<4;i++){
+                botoes[i].style.display = "none";
 
-            //socket.emit("resposta")
+            }
+        }
+
+        function show_buttons(){
+            for(var i = 0; i<4;i++){
+                botoes[i].style.display = "inline-block";
+
+            }
+        }
+
+        function player_choose(resposta,room,name){
+
+            socket.emit("Resposta",resposta,room,name);
 
         };
 
         /*SOCKET FUNCIONAR*/
         socket.on("connect", function(){ // primeira conexão
             divChat.appendChild(ShowMsg(`Conectou com id: ${socket.id}`));
+            console.log(sala);
             socket.emit("juntar_sala",sala);
         });
 
@@ -124,8 +141,8 @@
         ***************************** */
         
         if (host === 'true'){ // host
-            console.log(sala)
-            Temporizador(30,sala);
+           // console.log(sala)
+            Temporizador(10,sala);
               
         }
         else{// not host
@@ -149,6 +166,7 @@
             if (sala == room ){
                 if (rounds != 0){
                 console.log("ROUND");
+                show_buttons();
                 console.log(questao);
                 document.getElementById('tema').innerHTML = questao["Tema"];
                 document.getElementById('pergunta').innerHTML = questao["Pergunta"];
@@ -160,7 +178,7 @@
                 }
             }
             else{
-            window.location.replace("http://192.168.1.5:8081/lobby_search"); 
+            window.location.replace("/lobby_search"); 
             }    
         }
         });
@@ -179,6 +197,52 @@
             document.getElementById('teste').innerHTML = segundos;
         });
         }
+
+         /* *****************************
+        *                              *
+        *           Seleção            *
+        *         de Resposta          *
+        *                              *
+        ***************************** */
+
+
+        /*@args do pacote
+        room
+        nome
+        resposta
+        */
+
+
+        //superior esquerdo
+        document.querySelector('#resposta1').addEventListener('click', function () {
+            let resposta = document.getElementById("resposta1").innerHTML;
+            hide_buttons();
+            console.log(resposta);
+            player_choose(resposta,sala,Nome);
+            
+        });
+
+         //superior direito
+         document.querySelector('#resposta2').addEventListener('click', function () {
+            let resposta = document.getElementById("resposta2").innerHTML;
+            hide_buttons();
+            player_choose(resposta,sala,Nome);
+        });
+
+         //inferior esquerdo
+         document.querySelector('#resposta3').addEventListener('click', function () {
+            let resposta = document.getElementById("resposta3").innerHTML;
+            hide_buttons();
+            player_choose(resposta,sala,Nome);
+        });
+
+         //inferior direito
+         document.querySelector('#resposta4').addEventListener('click', function () {
+            let resposta = document.getElementById("resposta4").innerHTML;
+            hide_buttons();
+            player_choose(resposta,sala,Nome);
+        });
+
         
         /* *****************************
         *                              *

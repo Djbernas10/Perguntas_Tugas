@@ -15,7 +15,7 @@ function socketFlush(name,socket_id,sala){ //flush do socket
     for(var i=0;i<players[sala].length;i++){
 
         if(players[sala][i]["player_name"]==name){
-            if(players[sala][i]["socket_id"]!=socket_id){
+            if(players[sala][i]["socket_id"] != socket_id){
                 players[sala][i]["socket_id"]  = socket_id; //da flush do socket pelo novo
             }
         }
@@ -24,10 +24,50 @@ function socketFlush(name,socket_id,sala){ //flush do socket
 
 }
 
+function get_player(sala,name){
+
+    for(var i=0;i<players[sala].length;i++){
+
+        if(players[sala][i]["player_name"]==name){
+            return i;
+        }
+
+    }
+
+}
+
+function genQ(room){//gerar questão
+    
+    let rIndex =  Math.floor(Math.random() * jsonFile["Perguntas"].length); //gera o indice para qual sera usado apora selecionar o tema
+    let objQ = jsonFile["Perguntas"][rIndex] // guarda o tema na variavel
+    let pacote = [rIndex,objQ];
+
+    players[room][0]["qIndex"] = rIndex; // guarda o index da pergunta
+    
+    return pacote;
+    //socket.to(sala).emit("Questão",objQ,rIndex); // eniva a questão para a sala respetiva
+
+
+};
+
+function checkA(room){
+
+    let qIndex = players[room][0]["qIndex"];
+    
+    for(var i=0;i<players[room].length;i++){
+
+        if (players[room][i]["resposta"] === jsonFile["Perguntas"][qIndex]["Resposta"]){
+            players[room][i]["pontuacao"] +=1;
+        }   
+
+    }
+
+}
+
 exports.iniciar = function(socket,tempName){
     //Conexão
     gameSocket = socket
-    //checkA();
+   
 
     let lTimer = 100
     var teste = 5;
@@ -35,62 +75,39 @@ exports.iniciar = function(socket,tempName){
 
     /* JUNTAR À SALA */
     socket.on("juntar_sala",function(sala){ //juntar ao respetivo id da sala de jogo
-        //checka para a exisitencia da sala no arreio de players
-        /*
-        if (sala in players) {        
+        
+        if(players[sala]){
         }
         else{
-            //console.log(typeof(sala));
-            */
-            players[sala]=[];    // cria o arreio com o id da sala como chave
-        //}
-
-    
-            
+            players[sala]=[]; // cria o arreio com o id da sala como chave
+        }
+       
         socket.join(sala);// juntar a respetiva sala comum
-        console.log(socket.id);
-        socket.join(socket.id);//privado
-        var playerId = Math.random();
-        var pObjeto = {player_name:tempName,socket_id: socket.id, pontuacao:0, resposta:null}; //objeto do jogador
-            //objeto do jogador
-       // if(players[sala]["player_name"].find)
+        //console.log(socket.id);
+        //socket.join(socket.id);//privado
 
-
-       /// e4scolher a sala
-       // encontrar o nome
-       //mudar o socket id
+        if(players[sala].length == 0){
+            var pObjeto = {player_name:tempName,socket_id: socket.id, pontuacao:0, resposta:null,qIndex:null}; //objeto do jogador com a questao atual
+        }
+        else{
+            var pObjeto = {player_name:tempName,socket_id: socket.id, pontuacao:0, resposta:null}; //objeto do jogador
+        }
+        //console.log(pObjeto);
+    
         SOCKET_LIST[tempName] = socket;
         //console.log(SOCKET_LIST);
-        players[sala].push(pObjeto)// id do jogador, pontuacao atual da ronda, resposta a uma pergunta
+        players[sala].push(pObjeto);// id do jogador, pontuacao atual da ronda, resposta a uma pergunta
         socketFlush(tempName,socket.id,sala); //flush do socket
-        //console.log(players);
-        
-        
-        //emite o id do player
-        //socket.emit("PlayerID", playerId); // emite o id do jogador (nao o id do socket)
-        //console.log(jsonFile["Perguntas"][0]);
-        //console.log(players);
-        //checkA(sala);
-       // genQ(sala); // temporario
+        //console.log(players); 
     });
 
 
     /*DISCONNECT */
+    /*
     socket.on("disconnect",function(){
 
     });
-    
-    /*
-    // Host Events
-    gameSocket.on('hostCreateNewGame', hostCreateNewGame);
-    gameSocket.on('hostRoomFull', hostPrepareGame);
-    gameSocket.on('hostCountdownFinished', hostStartGame);
-    gameSocket.on('hostNextRound', hostNextRound);
     */
-
-
-
-
         /* *****************************
         *                              *
         *             Start            *
@@ -113,10 +130,10 @@ exports.iniciar = function(socket,tempName){
       
     socket.on("Start",function(room){ // rteceb resposta do cliente para comecar o jogo após o countdown
         rounds[room] = 5; // cira a sala nas rooms e dálhe o numero de rondas //5 rondas
-        var questao = genQ();
-        console.log(rounds);
-        console.log(questao);
-        socket.emit("Round",room,rounds[room],round_secs,questao);
+        var questao = genQ(room);
+        //console.log(rounds);
+        console.log(questao[1]);
+        socket.emit("Round",room,rounds[room],round_secs,questao[1]);
     });
 
 
@@ -131,12 +148,25 @@ exports.iniciar = function(socket,tempName){
         * **************************** */
 
        socket.on("GenQ",function(room){
-           // console.log("é esta");
-            console.log(room)
+            checkA(room)
             rounds[room] -=1; // diminui do total de rondas 
-            var questao =  genQ();// gera a questao a entregar aos jogadores
-            socket.emit("Round",room,rounds[room],round_secs,questao,); //emit para os users da sala
+            let questao =  genQ(room);// gera a questao a entregar aos jogadores
+            socket.emit("Round",room,rounds[room],round_secs,questao[1]); //emit para os users da sala
+            console.log(players)
        });
+
+        /* *****************************
+        *                              *
+        *            Resposta          *
+        *                              *
+        * **************************** */
+
+       socket.on("Resposta",function(resposta,room,name){ // guarda a resposta da ronda para o jogador
+
+        let pIndex = get_player(room,name);
+        players[room][pIndex]["resposta"] = resposta; // coloca a resposta no objeto do jogador
+        //console.log(players);
+       })
 
 
         /* *****************************
@@ -156,19 +186,6 @@ exports.iniciar = function(socket,tempName){
         *            FUNCOES           *
         *                              *
         ***************************** */
-    
-    function genQ(){//gerar questão
-    
-        let rIndex =  Math.floor(Math.random() * jsonFile["Perguntas"].length); //gera o indice para qual sera usado apora selecionar o tema
-        let objQ = jsonFile["Perguntas"][rIndex] // guarda o tema na variavel
-        //console.log(objQ);
-        estado = 1 // resultados
-
-        return objQ;
-        //socket.to(sala).emit("Questão",objQ,rIndex); // eniva a questão para a sala respetiva
-
-
-    };
 
     function playerWinCheck (resposta,rIndex){
 
@@ -181,24 +198,6 @@ exports.iniciar = function(socket,tempName){
         return playerWins;
     }
 
-    function checkA(sala){ // checkar a resposta
-
-        for(var player in players[sala]){
-            console.log(player)
-            /*
-            var playerWin = playerWinCheck(players[i].move);
-            if(playerWin){
-                players[i].score += 1;
-            }
-            */
-        };
-
-    };
-
-    setInterval(function(){
-        //envia uma questao a cada 30 segundos  
-        //genQ();
-    }, 30000);
 }
 
 // e4mit all sop pra sala em espe4cifico 
