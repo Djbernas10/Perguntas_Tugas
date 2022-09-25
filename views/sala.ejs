@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="assets/css/room.css">
     <script src="/socket.io/socket.io.js"></script>
     <script src="/assets/My_js/functions.js"></script>
+    <script src="/player_variable.js"></script>
+
 </head>
 <body>
     
@@ -162,25 +164,38 @@
         ***************************** */ 
 
         socket.on("Round",function(room,rounds,secs,questao){
-           
+           //console.log(players[room]);
+
             if (sala == room ){
                 if (rounds != 0){
-                console.log("ROUND");
-                show_buttons();
-                console.log(questao);
-                document.getElementById('tema').innerHTML = questao["Tema"];
-                document.getElementById('pergunta').innerHTML = questao["Pergunta"];
-                document.getElementById('resposta1').innerHTML = questao["Resposta"];
+                    console.log("ROUND");
+                    show_buttons();
+                    console.log(questao);
+                    document.getElementById('tema').innerHTML = questao["Tema"];
+                    document.getElementById('pergunta').innerHTML = questao["Pergunta"];
+                    document.getElementById('resposta1').innerHTML = questao["Resposta"];
 
-                if (host ==='true')
-                {
-                    Round_Timer(secs,sala,rounds);
+                    if (host ==='true')
+                    {
+                        Round_Timer(secs,sala,rounds);
+                    }
                 }
+                else{
+
+                    if(host ==='true'){
+                        window.location.replace(`/leaderboard?sala=${sala}`);
+
+                        //pde os resutlados dos players ao servidor para mandar para outra pagina
+                        //pagina final do score 
+                        //mudar o json para ter um arreio nas respostas
+                        //formatar o css total do jogo a decorrer
+                        //adicionar um leaderboard
+                        //parabenizar o player por ter ganho
+                        //apagar da bd apos o jogo acabar
+                        //esconder da lista de salas quando o jogo comecar
+                    }
+                }    
             }
-            else{
-            window.location.replace("/lobby_search"); 
-            }    
-        }
         });
 
 
@@ -207,9 +222,9 @@
 
 
         /*@args do pacote
-        room
-        nome
-        resposta
+        room - sala a que o jogador eprtence
+        nome - nome do jogador
+        resposta -  resposta escolhida
         */
 
 

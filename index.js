@@ -11,21 +11,14 @@ var mysql = require("mysql"); // modulo do mysql
 const session = require("express-session"); // modulo das sessoes
 const rs = require("randomstring"); ////criar o hash para os lobbys
 var game = require("./game"); // chama o ficheiro do jogo
-
-
+//pVariable = require("./player_variable"); // chama o ficheiro da viarvel dos jogadores global
+const pVariable = require("./player_variable");
 
 /*FUNCOES */
 
 function gen_id(){
 
     let hash;
-    /*
-    randomBytes(110, function(err, buf){
-        if (err) throw err;
-        hash = buf.toString('hex');
-        return hash;
-    });
-    */
     hash = rs.generate( {length: 50}); //tamanho do hash
     return hash;
 
@@ -79,16 +72,13 @@ exp.set("view engine","ejs"); //estabelece a view engine neste caso estou a usar
 
 
 /* Socket ON */
-
 io.on('connection',function(socket){ // saber se alguem conectou
     console.log(`Alguem conectou ${socket.id}`);
-    //console.log(tempName);
     game.iniciar(socket,tempName); // entra no ficheiro do jogo
-
 });
 
 
-/* LIGACAO INCIAL VAI PARA AO INDEX */
+/* LIGACAO INICIAL VAI PARA AO INDEX */
 
 exp.get("",function(req,res){ // quando nao tem nada a seguir ao 5000 ou seja vai para ao index (irei usar depois ajax para nunca sair desta pagina)
     // request e response
@@ -215,7 +205,7 @@ exp.post("/lobby_search",urlEParser,function(req,res){  // post depois do from i
                     //completa a entrada na lista de servidores disponivel
                     flag = false;
 
-                    //session.Store.username=nome; Perguntar ao stor
+                   
 
                     let sess = req.session;// inicia a sessao
                     sess.username = nome; //coloca na variavel de sessão o username escolhido
@@ -421,11 +411,11 @@ exp.get("/teste",function(req,res){
 
 });
 
-//socket
+//sala de jogo
 exp.get("/sala",function(req,res){
     
     let sess = req.session;
-
+    
     var con = mysql.createConnection({ // cria a conexao à base de dados tal como tinha feito com o php
 
         multipleStatements: true,
@@ -463,14 +453,69 @@ exp.get("/sala",function(req,res){
     });
     
 
-    
-
     tempName = sess.username;
     res.render("sala", {Nome: sess.username, Host:sess.host});
 
-    con.end
+    con.end();
 
 });
+
+//Game ended
+
+exp.get("/leaderboard",function(req,res){
+    
+    let sess = req.session;
+
+    var con = mysql.createConnection({ // cria a conexao à base de dados tal como tinha feito com o php
+
+        multipleStatements: true,
+        host:"localhost",
+        user:"root",
+        password:"",
+        database: "perguntastugas"
+    
+    });
+
+     //eftua a conexão
+     con.connect(function(err) { // inicia a conexão
+        if (err) {
+            console.log(err);
+            res.sendStatus(500);
+            return;
+        }
+    });
+
+ 
+
+    //se ja foi apagado tem de ingnorar FAZER DEPOIS
+
+
+    /*
+    con.query("DELETE FROM sala where hash_sala ='"++"'",function(err,result){
+               
+                    console.log("Usuario de nome "+ sess.username + " foi offline")//indica na consola o nome da pessoa ficou offline
+                    sess.destroy(function(err){
+                        if (err){
+                            return console.log(err);
+                        }   
+                        else{
+                            res.redirect("/index"); //redireciona devolta ao index
+                        }                 
+                    });
+    });
+    */
+    //console.log(players_room);
+    //console.log(resultados);
+    let teste = "123"
+    let random = pVariable.getObject();
+    console.log(random[req.query.sala]);
+    res.render("leaderboard",{Sala: random[req.query.sala]}); //?id=${players_room}`)
+
+    con.end();
+
+});
+
+
 
 /* 404 NOT FOUND*/
 exp.all("*",function(req,res){
