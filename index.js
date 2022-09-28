@@ -341,7 +341,7 @@ exp.get("/create_room",function(req,res){
                    //console.log("erro")
                 };
 
-                console.log("Sala Criada");// cria a sala
+                //console.log("Sala Criada");// cria a sala
 
             });//coloca na bd
             con.query("UPDATE user SET sala_hash_sala = '"+ hash_sala +"' WHERE Nickname = '"+sess.username+"'",function(err,result){
@@ -465,7 +465,7 @@ exp.get("/sala",function(req,res){
 exp.get("/leaderboard",function(req,res){
     
     let sess = req.session;
-
+    var apagado = null;
     var con = mysql.createConnection({ // cria a conexao à base de dados tal como tinha feito com o php
 
         multipleStatements: true,
@@ -488,28 +488,36 @@ exp.get("/leaderboard",function(req,res){
  
 
     //se ja foi apagado tem de ingnorar FAZER DEPOIS
+/*
+    con.query("Select hash_sala FROM sala WHERE hash_sala = '"+req.query.sala+"'",function(err,result){
+        if (err){
+            console.log("[mysqlk error]",err);
+         }
+         else{
+        console.log("funciona");
+         }
 
-
-    /*
-    con.query("DELETE FROM sala where hash_sala ='"++"'",function(err,result){
-               
-                    console.log("Usuario de nome "+ sess.username + " foi offline")//indica na consola o nome da pessoa ficou offline
-                    sess.destroy(function(err){
-                        if (err){
-                            return console.log(err);
-                        }   
-                        else{
-                            res.redirect("/index"); //redireciona devolta ao index
-                        }                 
-                    });
     });
-    */
-    //console.log(players_room);
-    //console.log(resultados);
-    let teste = "123"
-    let random = pVariable.getObject();
-    console.log(random[req.query.sala]);
-    res.render("leaderboard",{Sala: random[req.query.sala]}); //?id=${players_room}`)
+*/
+        con.query("DELETE FROM sala WHERE hash_sala = '"+req.query.sala+"'",function(err,result){
+           
+            if (err){
+                console.log("[mysqlk error]",err);
+             }
+             else{
+                console.log("apagado");
+             }
+            
+        });
+       
+    
+        
+    
+    
+    
+    let objeto = pVariable.getObject();
+    //console.log(random[req.query.sala]);
+    res.render("leaderboard",{Sala: objeto[req.query.sala]});
 
     con.end();
 
@@ -525,7 +533,7 @@ exp.all("*",function(req,res){
 });
 
 
-server.listen(porta,host); // onde ligar
+server.listen(porta); // onde ligar
 //server.listen(porta); //para local host
 console.log("Funciona no ip e porta http://"+host+":"+porta);
 

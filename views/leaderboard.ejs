@@ -27,14 +27,12 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Cell 1</td>
-                        <td>Cell 2</td>
-                    </tr>
-                    <tr>
-                        <td>Cell 3</td>
-                        <td>Cell 4</td>
-                    </tr>
+                    <% for(var i = 0; i< Sala.length; i++){ %>
+                        <tr>
+                            <td><%= Sala[i].player_name%></td>
+                            <td><%= Sala[i].pontuacao %></td>
+                        </tr>
+                        <% }%>
                 </tbody>
             </table>
         </div>
@@ -53,5 +51,13 @@
     </footer>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
 </body>
+
+
+<script>
+
+    var Jogadores = '<% Sala %>';
+
+
+</script>
 
 </html>

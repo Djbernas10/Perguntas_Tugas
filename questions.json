@@ -3,272 +3,272 @@
       {
         "Tema": "Desporto ",
         "Pergunta": "Qual desporto nao inclui rede",
-        "Resposta": "Curling (Voleiball,Tenis,PingPong)"
+        "Resposta": ["Curling","Voleiball","Tenis","Ping Pong"]
       },
       {
         "Tema": "Entretenimento",
         "Pergunta": "Quem foi o CatWeazel",
-        "Resposta": "É uma personagem de desenhos animados"
+        "Resposta": ["Personagem de desenhos animados","Personagem de Video Jogo","Personagem de filme","Imperador Egipcio"]
       },
       {
         "Tema": "Historia",
         "Pergunta": "Qual é o primeiro nome do Hitler",
-        "Resposta": "Adolf"
+        "Resposta": ["Adolf","Silvester","Joseph","Matias"]
       },
       {
         "Tema": "Arte",
         "Pergunta": "Quem escreveu o livro \"Metamorphosis\" em 1920",
-        "Resposta": "Franz Kafka"
+        "Resposta": ["Franz Kafka","Anne Frank","Sigmund Freud","J.K Rowling"]
       },
       {
         "Tema": "Geografia",
         "Pergunta": "Qual é um bolo e tipico Português",
-        "Resposta": "Pastel de Nata"
+        "Resposta": ["Pastel de Nata","Croissant","Pannacota","Bagel"]
       },
       {
         "Tema": "Historia",
         "Pergunta": "Que nome os romanos davam ao mar Mediterrâneo",
-        "Resposta": "Mare Nostrum"
+        "Resposta": ["Mare Nostrum","Mare Vostrum","Mare Sostrum","Mare Estrum"]
       },
       {
         "Tema": "Desporto ",
         "Pergunta": "Quem é o atleta mais seguido do Instagram",
-        "Resposta": "Cristiano Ronaldo"
+        "Resposta": ["Cristiano Ronaldo","Lionel Messi","Rafael Nadal","Lebron James"]
       },
       {
         "Tema": "Desporto ",
         "Pergunta": "Quem é o futebolista com mais prémios dados pela fifa. (bolas de ouro)",
-        "Resposta": "Lionel Messi"
+        "Resposta": ["Lionel Messi","Cristiano Ronaldo","Andres Iniesta","Neymar Jr"]
       },
       {
         "Tema": "Geografia",
         "Pergunta": "Qual não é um relevo no estado americano do Arizona?",
-        "Resposta": "Tundra"
+        "Resposta":[ "Tundra","Mesa","Savana","Planicie"]
       },
       {
         "Tema": "Desporto ",
         "Pergunta": "Quem é o jogador de basket da NBA considerado por muitos um dos melhores de sempre",
-        "Resposta": "Michael Jordan"
+        "Resposta": ["Michael Jordan","Kobe Bryant","Lebron James","Kevin Durant"]
       },
       {
         "Tema": "Geografia",
         "Pergunta": "Qual é a capital do Hawaii, Estados Unidos?",
-        "Resposta": "Honolulu"
+        "Resposta": ["Honolulu","Tokyo","Washington DC","Las Vegas"]
       },
       {
         "Tema": "Ciencias",
-        "Pergunta": "Que tipo de animal  é normalmente usado nas largadas",
-        "Resposta": "Boi"
+        "Pergunta": "Que tipo de animal é normalmente usado nas largadas",
+        "Resposta": ["Boi","Vaca","Bode","Ovelha"]
       },
       {
         "Tema": "Arte",
         "Pergunta": "Quem pintou \"A Ronda da Noite\"?",
-        "Resposta": "Rembrandt"
+        "Resposta": ["Rembrandt","Leonardo Da Vinci","Dalí","Michelangelo"]
       },
       {
         "Tema": "Ciencias",
         "Pergunta": "Qual é a formula da água em quimica",
-        "Resposta": "H2O"
+        "Resposta": ["H2O","CO2","HO2","H3O"]
       },
       {
         "Tema": "Historia",
         "Pergunta": "Quem criou o Luteranismo?",
-        "Resposta": "Martin Luther King"
+        "Resposta": ["Martin Luther King","Willis Luther Williams","Jennie Luther Parks","Aldof Luther Hitler"]
       },
       {
         "Tema": "Entretenimento",
         "Pergunta": "Qual é o nome do ator que interpreta a personagem Rambo",
-        "Resposta": "Sylvester Stalone"
+        "Resposta": ["Sylvester Stalone","Arnold Schwarzenegger","Christian Bale","Zac Efron"]
       },
       {
         "Tema": "Ciencias",
         "Pergunta": "Que comida ajuda o cérebro a libertar endorfina?",
-        "Resposta": "Chocolate"
+        "Resposta": ["Chocolate","Maçã","Peru","Tomate"]
       },
       {
         "Tema": "Entretenimento",
         "Pergunta": "Qual é o estilo de música tocado pelo guitarrista B.B King",
-        "Resposta": "Blues"
+        "Resposta": ["Blues","Rock","Punk","Jazz"]
       },
       {
         "Tema": "Historia",
         "Pergunta": "O que é 5:00PM em tempo Militar",
-        "Resposta": "17:00"
+        "Resposta": ["17:00","16:00","18:00","05:00"]
       },
       {
         "Tema": "Historia",
         "Pergunta": "Nomeie os sapatos macios de pele de veado feitos e usados pelos índios nativos?",
-        "Resposta": "Mocassins" 
+        "Resposta": ["Mocassins","Sapatilhas","Ténis","Chinelas"] 
       },
       {
         "Tema": "Ciencias",
         "Pergunta": "Que nome se dá à área que estuda a sociedade",
-        "Resposta": "Sociologia"
+        "Resposta": ["Sociologia","Criminologia","Psicologia","Patologia"]
       },
       {
         "Tema": "Desporto ",
         "Pergunta": "Onde foi jogado o campeonato do mundo de futebol de 2010",
-        "Resposta": "áfrica do sul"
+        "Resposta": ["África do sul","Brasil","Alemanha","Corea"]
       },
       {
         "Tema": "Desporto ",
-        "Pergunta": "Em que país se realizou o campeonato mundial de 2018?",
-        "Resposta": "França"
+        "Pergunta": "Em que país se realizou o campeonato mundial de futebol de 2018?",
+        "Resposta": ["França","Reino Unido","Brasil","Itália"]
       },
       {
         "Tema": "Entretenimento",
         "Pergunta": "Quem é conhecido por fazer rir",
-        "Resposta": "Palhaço"
+        "Resposta": ["Palhaço","Mimo","Médico","Comediante"]
       },
       {
         "Tema": "Geografia",
         "Pergunta": "Bismarck é a capital de qual estado Americano?",
-        "Resposta": "Dakota do Norte"
+        "Resposta": ["Dakota do Norte","Dakota do Sul","Dakota do Oeste","Dakota do Este"]
       },
       {
         "Tema": "Arte",
         "Pergunta": "Como se chamavam as sereias no poema épico \"Os Lusiadas\"",
-        "Resposta": "Ninfas"
+        "Resposta": ["Ninfas","Sinfas","Sereias","Jinfas"]
       },
       {
         "Tema": "Historia",
         "Pergunta": "A quem pertence o sangue marcado nas pedras duma fonte na quinta das lágrimas",
-        "Resposta": "Ines de Castro"
+        "Resposta": ["Ines de Castro","Sara Carreira","Cristina Ferreira","Anne Frank"]
       },
       {
         "Tema": "Ciencias",
         "Pergunta": "Quais são os dois elementos que fazem a água?",
-        "Resposta": "Hidrogénio e Oxigénio"
+        "Resposta": ["Hidrogénio e Oxigénio","Hélio e Oxigénio","Hidrogénio e Azoto","Oxigénio e Azoto"]
       },
       {
         "Tema": "Arte",
-        "Pergunta": "Em que data nasceu o Mickey Mouse",
-        "Resposta": 10550
+        "Pergunta": "Em que ano nasceu o Mickey Mouse",
+        "Resposta": ["1928","1930","1926","1920"]
       },
       {
         "Tema": "Desporto",
         "Pergunta": "A partir de 2017, quantas Copas Stanley o Chicago Blackhawks ganhou?",
-        "Resposta": 6
+        "Resposta": ["6","7","5","1"]
       },
       {
         "Tema": "Entretenimento",
         "Pergunta": "Em que dia é comemorado o Natal em Portugal?",
-        "Resposta": 44920
+        "Resposta": ["25","24","31","2"]
       },
       {
         "Tema": "Ciencias",
         "Pergunta": "Que sentidos os passaros têm mais apurados que os Humanos",
-        "Resposta": "Visão e audição"
+        "Resposta": ["Visão e audição","Visão","Audição","Nenhum Sentido"]
       },
       {
         "Tema": "Historia",
         "Pergunta": "De que país era o \"Cyrus o Grande\"?",
-        "Resposta": "Persia"
+        "Resposta": ["Persia","Jugoslávia","Moçambique","Itália"]
       },
       {
         "Tema": "Historia",
         "Pergunta": "Qual é o nome do Poseidon na mitologia Romana",
-        "Resposta": "Neptuno"
+        "Resposta": ["Neptuno","Jupiter","Saturno","Plutão"]
       },
       {
         "Tema": "Ciencias",
         "Pergunta": "Qual era a nacionalidade do Albert Einstein",
-        "Resposta": "Alemã"
+        "Resposta": ["Alemão","Italiano","Grego","Português"]
       },
       {
         "Tema": "Entretenimento",
-        "Pergunta": "Qual é a primeira letra do tema musical do SpongeBob?",
-        "Resposta": "Quem"
+        "Pergunta": "Qual é a primeira palavra do tema musical do SpongeBob?",
+        "Resposta": ["Quem","Era","Uma","Onde"]
       },
       {
         "Tema": "Entretenimento",
         "Pergunta": "Na série \"FRIENDS\", quantos filhos Phoebe tem para o seu irmão?",
-        "Resposta": 3
+        "Resposta": ["3","1","4","2"]
       },
       {
         "Tema": "Geografia",
         "Pergunta": "Em que país fica a serra da estrela?",
-        "Resposta": "Portugal"
+        "Resposta": ["Portugal","Brasil","Moçambique","Angola"]
       },
       {
         "Tema": "Ciencias",
         "Pergunta": "Quantos meses dura em média uma gravidez?",
-        "Resposta": 9
+        "Resposta": ["9","8","15","7"]
       },
       {
         "Tema": "Geografia",
         "Pergunta": "Qual é a fronteira terrestre de Portugal continental?",
-        "Resposta": "Espanha"
+        "Resposta": ["Espanha","Estados Unidos","Não Tem","França"]
       },
       {
         "Tema": "Desporto",
         "Pergunta": "Qual é o número da camisola de Lionel Messi?",
-        "Resposta": 10
+        "Resposta": ["10","23","69","99"]
       },
       {
         "Tema": "Geografia",
         "Pergunta": "Onde fica situada a cidade do Cabo?",
-        "Resposta": "África"
+        "Resposta": ["África","Europa","America","Asia"]
       },
       {
         "Tema": "Geografia",
         "Pergunta": "Que cidade de Portugal é apelidada de \"Cidade Invicta\"?",
-        "Resposta": "Porto"
+        "Resposta": ["Porto","Lisboa","Sesimbra","Leiria"]
       },
       {
         "Tema": "Ciencias",
         "Pergunta": "Na tabela periódica \"Mg\" significa o quê?",
-        "Resposta": "Magnésio"
+        "Resposta":[ "Magnésio","Manganésio","Megénio","Oxigenio"]
       },
       {
         "Tema": "Ciencias",
         "Pergunta": "Qual o resultado de 5x2?",
-        "Resposta": 10
+        "Resposta": ["10","3","55","52"]
       },
       {
         "Tema": "Ciencias",
         "Pergunta": "Qual é encontrado nas celulas vegetais mas não nas animais.",
-        "Resposta": "Clorofila"
+        "Resposta": ["Clorofila","Mitocondria","Pele","Atomos"]
       },
       {
         "Tema": "Desporto",
         "Pergunta": "Onde se situa o famosos estádio da Luz",
-        "Resposta": "Lisboa"
+        "Resposta": ["Lisboa","Porto","Leiria","Faro"]
       },
       {
         "Tema": "Desporto",
         "Pergunta": "Onde está situada a estátua do Cr7",
-        "Resposta": "Ilha da Madeira"
+        "Resposta": ["Ilha da Madeira","Ilha dos Açores","Portugal Continental","Madrid"]
       },
       {
         "Tema": "Entretenimento",
         "Pergunta": "No filme \"Iron Man\" qual é o nome do homem que construiu o fato metálico?",
-        "Resposta": "Tony Stark"
+        "Resposta": ["Tony Stark","Tony Mark","Tony Spark","Anthony Marth"]
       },
       {
         "Tema": "Historia",
         "Pergunta": "Que numero representa a letra \"X\" em romano",
-        "Resposta": 10
+        "Resposta": ["10","1","4","5"]
       },
       {
         "Tema": "Entretenimento",
         "Pergunta": "Qual é o nome da banda de sigla \"1D\"",
-        "Resposta": "One Direction"
+        "Resposta": ["One Direction","One Detection","One Detention","One Dimension"]
       },
       {
         "Tema": "Historia",
         "Pergunta": "Quem escreveu os Lusiadas",
-        "Resposta": "Luís de Camões"
+        "Resposta": ["Luís de Camões","Fernando Pessoa","Ricardo Reis","José Saramago"]
       },
       {
         "Tema": "Entretenimento",
         "Pergunta": "A personagem \"Bart\" faz parte de que serie televisiva",
-        "Resposta": "Os simpsons"
+        "Resposta": ["Os simpsons","Family Guy","Futurama","Rick and Bart"]
       },
       {
         "Tema": "Historia",
         "Pergunta": "Emn honra de quem se realizam os jogos olimpicos",
-        "Resposta": "Em honra dos deuses gregos"
+        "Resposta": ["Em honra dos deuses gregos","Em honra dos deuses romanos","Em honra dos deuses Chineses","Em honra dos deuses Persas"]
       }
     ]
   }

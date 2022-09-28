@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="assets/css/room.css">
     <script src="/socket.io/socket.io.js"></script>
     <script src="/assets/My_js/functions.js"></script>
-    <script src="/player_variable.js"></script>
+    <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
 
 </head>
 <body>
@@ -36,14 +36,17 @@
         </div>
         </form>
     </section>
+
+    
+    
     <script type="text/javascript">
 
         
         /*VARIAVEIS*/
         //192.168.1.75
         //nord 100.67.125.212
-        var socket = io.connect("http://192.168.1.75:8081"); // para rede local
-        //var socket = io.connect("http://localhost:8081"); // para local host
+        //var socket = io.connect("http://192.168.1.75:8081"); // para rede local
+        var socket = io.connect("http://localhost:8081"); // para local host
         //192.168.1.5
         var divChat = document.querySelector('#Msg-Box');
         var form = document.getElementById('form');
@@ -58,7 +61,6 @@
       //  var testinho = 5;
 
         /*Funcoes*/
-
         function ShowMsg(text){ // retorna a msg a colocar no chatbox
 
             let p = document.createElement("p");
@@ -89,7 +91,7 @@
                 testinho = segundos;
                 segundos--;
                 if (segundos < 0) {
-                    console.log("END ROUND");
+                   
                     clearInterval(timer);
                     //let pergunta = document.getElementById("pergunta");
                     socket.emit("GenQ",room);//comeca a proxima ronda
@@ -121,19 +123,10 @@
         /*SOCKET FUNCIONAR*/
         socket.on("connect", function(){ // primeira conexão
             divChat.appendChild(ShowMsg(`Conectou com id: ${socket.id}`));
-            console.log(sala);
+            console.log(socket)
             socket.emit("juntar_sala",sala);
         });
 
-        /*EMITE O ID DA SALA*/
-        //socket.emit("juntar_sala",sala);// juntar à sala de id do url
-
-        /*Guarda o id do jogador*/
-
-        socket.on('PlayerID',function(data){
-                playerId = data; // guarda o id do jogador vindo do servidor
-                //console.log(playerID);
-        });
 
         /* *****************************
         *                              *
@@ -144,7 +137,7 @@
         
         if (host === 'true'){ // host
            // console.log(sala)
-            Temporizador(10,sala);
+            Temporizador(30,sala);
               
         }
         else{// not host
@@ -157,6 +150,7 @@
             });
         }
 
+
         /* *****************************
         *                              *
         *        JOGO INICIADO         *
@@ -164,16 +158,19 @@
         ***************************** */ 
 
         socket.on("Round",function(room,rounds,secs,questao){
-           //console.log(players[room]);
-
+           console.log("Chegou");
+            console.log(questao);
             if (sala == room ){
                 if (rounds != 0){
-                    console.log("ROUND");
+                    
                     show_buttons();
-                    console.log(questao);
+                   
                     document.getElementById('tema').innerHTML = questao["Tema"];
                     document.getElementById('pergunta').innerHTML = questao["Pergunta"];
-                    document.getElementById('resposta1').innerHTML = questao["Resposta"];
+                    document.getElementById('resposta1').innerHTML = questao["Resposta"][0];
+                    document.getElementById('resposta2').innerHTML = questao["Resposta"][1];
+                    document.getElementById('resposta3').innerHTML = questao["Resposta"][2];
+                    document.getElementById('resposta4').innerHTML = questao["Resposta"][3];
 
                     if (host ==='true')
                     {
@@ -182,18 +179,17 @@
                 }
                 else{
 
-                    if(host ==='true'){
+                    //if(host ==='true'){
                         window.location.replace(`/leaderboard?sala=${sala}`);
 
-                        //pde os resutlados dos players ao servidor para mandar para outra pagina
-                        //pagina final do score 
-                        //mudar o json para ter um arreio nas respostas
-                        //formatar o css total do jogo a decorrer
-                        //adicionar um leaderboard
-                        //parabenizar o player por ter ganho
+                        
+                       
+                        //formatar o css total do jogo a decorrer +
+                        //adicionar um leaderboard -
+                        //parabenizar o player por ter ganho + 
                         //apagar da bd apos o jogo acabar
-                        //esconder da lista de salas quando o jogo comecar
-                    }
+                        //esconder da lista de salas quando o jogo comecar + 
+                    //}
                 }    
             }
         });
@@ -232,7 +228,7 @@
         document.querySelector('#resposta1').addEventListener('click', function () {
             let resposta = document.getElementById("resposta1").innerHTML;
             hide_buttons();
-            console.log(resposta);
+           
             player_choose(resposta,sala,Nome);
             
         });
@@ -241,6 +237,7 @@
          document.querySelector('#resposta2').addEventListener('click', function () {
             let resposta = document.getElementById("resposta2").innerHTML;
             hide_buttons();
+           
             player_choose(resposta,sala,Nome);
         });
 
@@ -248,6 +245,7 @@
          document.querySelector('#resposta3').addEventListener('click', function () {
             let resposta = document.getElementById("resposta3").innerHTML;
             hide_buttons();
+           
             player_choose(resposta,sala,Nome);
         });
 
@@ -255,6 +253,7 @@
          document.querySelector('#resposta4').addEventListener('click', function () {
             let resposta = document.getElementById("resposta4").innerHTML;
             hide_buttons();
+          
             player_choose(resposta,sala,Nome);
         });
 
