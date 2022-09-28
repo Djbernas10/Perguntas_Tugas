@@ -4,7 +4,8 @@ var players = {};
 var rounds = {};
 var player_backup = {};
 var round_secs = 5;
-const jsonFile = require("./questions.json")
+const jsonFile = require("./questions.json");
+const TestjsonFile = require("./questions-test-copy.json");
 var estado = 0 // 0 -fase de resposta 1- fase de resultados~
 
 const pVariable = require("./player_variable");
@@ -39,9 +40,9 @@ function get_player(sala,name){
 
 function genQ(room){//gerar questão
     
-    let rIndex =  Math.floor(Math.random() * jsonFile["Perguntas"].length); //gera o indice para qual sera usado apora selecionar o tema
-    let objQ = jsonFile["Perguntas"][rIndex] // guarda o tema na variavel
-    //objQ["Resposta"]  = shuffleQ(objQ["Resposta"]);
+    let rIndex =  Math.floor(Math.random() * TestjsonFile["Perguntas"].length); //gera o indice para qual sera usado apora selecionar o tema
+    let objQ = TestjsonFile["Perguntas"][rIndex]; // guarda o tema na variavel
+    objQ["Resposta"]  = shuffleQ(objQ["Resposta"]);
     let pacote = [rIndex,objQ];
 
     players[room][0]["qIndex"] = rIndex; // guarda o index da pergunta
@@ -55,9 +56,12 @@ function genQ(room){//gerar questão
 function checkA(room){
 
     let qIndex = players[room][0]["qIndex"];
-
+    console.log(players[room][0]["resposta"]);
+    console.log(jsonFile["Perguntas"][qIndex]["Resposta"]);
     for(var i=0;i<players[room].length;i++){
-        if (players[room][i]["resposta"] === jsonFile["Perguntas"][qIndex]["Resposta"][0]){
+
+
+        if (players[room][i]["resposta"] == jsonFile["Perguntas"][qIndex]["Resposta"][0]){
             players[room][i]["pontuacao"] +=1;
         }   
 
@@ -124,12 +128,7 @@ exports.iniciar = function(socket,tempName){
     socket.on("Start",function(room){ // rteceb resposta do cliente para comecar o jogo após o countdown
         rounds[room] = 5; // cira a sala nas rooms e dálhe o numero de rondas //5 rondas
         var questao = genQ(room);
-        //console.log(rounds);
-        //console.log(questao[1]);
-        console.log("enviou")
-       // console.log(players);
-        //socket.emit("TESTE")
-        socket.emit("Round",room,rounds[room],round_secs,questao[1]);
+        socket.emit("Round",room,rounds[room],round_secs,questao[1],players[room]);
     });
 
 
@@ -151,7 +150,7 @@ exports.iniciar = function(socket,tempName){
 
 
 
-            console.log(players);
+            //console.log(players);
 
         /*
             for(var i=0; i < players[room].length;i++){
@@ -164,14 +163,7 @@ exports.iniciar = function(socket,tempName){
             }
             */
 
-
-
-
-
-
-
-
-            socket.emit("Round",room,rounds[room],round_secs,questao[1]); //emit para os users da sala
+            socket.emit("Round",room,rounds[room],round_secs,questao[1],players[room]); //emit para os users da sala
             pVariable.saveObject(players);
        });
 

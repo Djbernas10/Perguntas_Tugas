@@ -35,8 +35,7 @@
                             <input class="btn" type="submit" value="Send" id="msg-submit" />
                             </div>
                             </form>
-                        
-                    </td>
+                        </td>
                         <td id="mid-col"> 
                             
                             <div class="grid-item"><h3 id="teste">1</h3></div>
@@ -44,16 +43,18 @@
                             <div class="grid-item"><button type="button" id="resposta2" class="btn-answer"></button></div>
                             <div class="grid-item"><button type="button" id="resposta3" class="btn-answer"></button></div>  
                             <div class="grid-item"><button type="button" id="resposta4" class="btn-answer"></button></div>
-                            	</td>
+                        </td>
 
-                                <td class="side-cols">
-
-                                    <div class="chatContainer">
+                         <td class="side-cols">
+                            <div class="chatContainer">
                             <div id="title">Leaderboard</div>
                             <div id="cubo">
+
                             </div>
+
                             </div>
-                                </td>
+                            
+                        </td>
                     </tr>
                     
                 </tbody>
@@ -151,10 +152,31 @@
         }
 
         function player_choose(resposta,room,name){
-
+            console.log(resposta);
             socket.emit("Resposta",resposta,room,name);
 
         };
+
+        function clean(){
+
+            document.getElementById("cubo").innerHTML = "";
+
+        }
+
+        function show_leader(players){
+            console.log(players)
+
+            for(var i=0;i<players.length;i++){
+
+                var element = document.createElement("p");
+                element.appendChild(document.createTextNode(""+players[i]["player_name"]+": "+players[i]["pontuacao"]+""))
+                document.getElementById("cubo").appendChild(element);
+
+
+
+            }
+
+        }
 
         /*SOCKET FUNCIONAR*/
         socket.on("connect", function(){ // primeira conexão
@@ -173,7 +195,7 @@
         
         if (host === 'true'){ // host
            // console.log(sala)
-            Temporizador(30,sala);
+            Temporizador(5,sala);
               
         }
         else{// not host
@@ -193,9 +215,12 @@
         *                              *
         ***************************** */ 
 
-        socket.on("Round",function(room,rounds,secs,questao){
-           console.log("Chegou");
-            console.log(questao);
+        socket.on("Round",function(room,rounds,secs,questao,players){
+          // console.log("Chegou");
+            //console.log(questao);
+            clean(); // limpa o leaderboard
+            show_leader(players); // coloca denovo o leaderboard
+
             if (sala == room ){
                 if (rounds != 0){
                     
