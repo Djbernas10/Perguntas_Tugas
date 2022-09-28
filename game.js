@@ -44,7 +44,7 @@ function genQ(room){//gerar questão
     let objQ = TestjsonFile["Perguntas"][rIndex]; // guarda o tema na variavel
     objQ["Resposta"]  = shuffleQ(objQ["Resposta"]);
     let pacote = [rIndex,objQ];
-
+    
     players[room][0]["qIndex"] = rIndex; // guarda o index da pergunta
     
     return pacote;
@@ -56,8 +56,6 @@ function genQ(room){//gerar questão
 function checkA(room){
 
     let qIndex = players[room][0]["qIndex"];
-    console.log(players[room][0]["resposta"]);
-    console.log(jsonFile["Perguntas"][qIndex]["Resposta"]);
     for(var i=0;i<players[room].length;i++){
 
 

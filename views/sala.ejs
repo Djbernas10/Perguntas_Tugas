@@ -152,7 +152,7 @@
         }
 
         function player_choose(resposta,room,name){
-            console.log(resposta);
+           // console.log(resposta);
             socket.emit("Resposta",resposta,room,name);
 
         };
@@ -164,7 +164,7 @@
         }
 
         function show_leader(players){
-            console.log(players)
+            //console.log(players)
 
             for(var i=0;i<players.length;i++){
 
