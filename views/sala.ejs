@@ -5,6 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sala</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/fonts/ionicons.min.css">
+    <link rel="stylesheet" href="assets/css/Footer-Basic.css">
     <link rel="stylesheet" href="assets/css/room.css">
     <script src="/socket.io/socket.io.js"></script>
     <script src="/assets/My_js/functions.js"></script>
@@ -13,29 +16,62 @@
 </head>
 <body>
     
-    <h1 style="color: white"> <%= Host %>  </h1>
-    <h1 style="color: white"> <%= Nome %>  </h1>
-    
-    <h1 style="color: white" id="teste"></h1>
-    <h1 style="color: white" id="tema"></h1>
-    <h1 style="color: white" id="pergunta"></h1>
-    <button type="button" id="resposta1"></button>
-    <button type="button" id="resposta2"></button>
-    <button type="button" id="resposta3"></button>
-    <button type="button" id="resposta4"></button>
+    <div class="container" style="width: 100%;height: 100%;">
+        <h1 class="text-center" id="tema" >O jogo</h1>
+        <h2 class="text-center" id="pergunta">começará em breve</h2>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="side-cols">
+                            <form id="form">
+                            <div class="chatContainer">
+                            <div id="title">Chat</div>
+                            <div class="chatBox" id="Msg-Box">
+                            </div>
+                            <input id="chat-input" style="width: 60%; height: 30px;" autocomplete="off" type="text" /> 
+                            <input class="btn" type="submit" value="Send" id="msg-submit" />
+                            </div>
+                            </form>
+                        
+                    </td>
+                        <td id="mid-col"> 
+                            
+                            <div class="grid-item"><h3 id="teste">1</h3></div>
+                            <div class="grid-item"><button type="button" id="resposta1" class="btn-answer">1</button></div>
+                            <div class="grid-item"><button type="button" id="resposta2" class="btn-answer"></button></div>
+                            <div class="grid-item"><button type="button" id="resposta3" class="btn-answer"></button></div>  
+                            <div class="grid-item"><button type="button" id="resposta4" class="btn-answer"></button></div>
+                            	</td>
 
-    
-    <section>
-        <form id="form">
-        <div class="chatContainer">
-        <div>Chat</div>
-        <div class="chatBox" id="Msg-Box">
+                                <td class="side-cols">
+
+                                    <div class="chatContainer">
+                            <div id="title">Leaderboard</div>
+                            <div id="cubo">
+                            </div>
+                            </div>
+                                </td>
+                    </tr>
+                    
+                </tbody>
+            </table>
         </div>
-        <input id="chat-input" style="width: 60%; height: 30px;" autocomplete="off" type="text" /> 
-        <input class="btn" type="submit" value="Send" id="msg-submit" />
-        </div>
-        </form>
-    </section>
+    </div>
+
+    <footer class="footer-basic" style="background: grey;width: 100%;">
+        <div class="social" style="color: white;"><a href="#"><i class="icon ion-social-instagram"></i></a><a href="#"><i class="icon ion-social-snapchat"></i></a><a href="#"><i class="icon ion-social-twitter"></i></a><a href="#"><i class="icon ion-social-facebook"></i></a></div>
+        <ul class="list-inline" style="color: white;">
+            <li class="list-inline-item"><a href="#">Home</a></li>
+            <li class="list-inline-item"><a href="#">Services</a></li>
+            <li class="list-inline-item"><a href="#">About</a></li>
+            <li class="list-inline-item"><a href="#">Terms</a></li>
+            <li class="list-inline-item"><a href="#">Privacy Policy</a></li>
+        </ul>
+        <p class="copyright" style="color: white;">Perguntas Tugas © 2022</p>
+    </footer>
 
     
     
@@ -45,9 +81,9 @@
         /*VARIAVEIS*/
         //192.168.1.75
         //nord 100.67.125.212
-        //var socket = io.connect("http://192.168.1.75:8081"); // para rede local
-        var socket = io.connect("http://localhost:8081"); // para local host
-        //192.168.1.5
+        var socket = io.connect("http://192.168.1.4:8081"); // para rede local
+        //var socket = io.connect("http://localhost:8081"); // para local host
+        //192.168.1.4
         var divChat = document.querySelector('#Msg-Box');
         var form = document.getElementById('form');
         var msgInput = document.getElementById("chat-input");
